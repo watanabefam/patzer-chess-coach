@@ -273,12 +273,24 @@ This is the `verify:lessons` pattern applied to audio, and it belongs in CI so a
 
 Total estimated: **~1.75 days** (v1 said 3–4; verification removed the authoring and the migration; the voice pipeline added back 2 h).
 
-### Phase 0 — Verify the last two unknowns (2 h)
+### Phase 0 — Boot and measure (1 h)
 
-1. Measure `quickClassify` wall-clock at depth 10 (two evals, serialized via `runOnAnalysisEngine`).
-2. Measure `moveMotifs` + `moveReasons` cost (expect <2 ms).
-3. Confirm the `widenGamesSourceCheck()` pattern generalises to `coach_behavior`.
-4. Confirm which `coach_behavior` value makes `CoachPanel.autoPlay` true, so a new density value keeps the auto path.
+Two of the four original unknowns are **already closed** by code reading during v2/v5 verification:
+
+- ✅ No `coach_behavior` migration is needed — `always_on_pedagogical` already opens the auto panel. Drop item 5 from v1.
+- ✅ `CoachPanel.autoPlay` follows `coach_behavior === 'always_on_pedagogical'` (`Play.tsx:917`), and `coachConfigured` is a separate gate.
+
+What remains, and can only be measured on the machine that will run it:
+
+1. **Boot.** `npm run setup && npm run dev`, record CPU model, confirm Stockfish fetches and a bot game starts.
+2. **Measure `quickClassify`.** Ten moves; record median and worst. Budget: **median < 300 ms, worst < 800 ms.**
+3. **Measure `moveMotifs` + `moveReasons`.** Expect **~1 ms**. This is the number that validates the architecture — the instant line must never touch the engine.
+
+**Why (2) matters.** Every move already runs two Stockfish evaluations at depth 10 (before and after) through one serialised queue. If that overruns the bot's reply time, the queue backs up and the coach drifts behind the game. The instant line is immune either way — but the LLM escalation attaches to the classified result, so its delay compounds.
+
+**How to measure.** Play a bot game with devtools open on the WebSocket frames; compare the arrival time of `move_classified` against the moment the move was sent. Alternatively wrap `quickClassify` in a server-side timer. Ten moves is enough.
+
+**Outcome.** Three numbers recorded in §14. If they land inside budget, Phase 1 needs no design change. If `quickClassify` overruns, the options in order are: lower the depth, cache eval-by-FEN, or decouple escalation from classification entirely.
 
 ### Phase 1 — Instant line (4 h)
 
