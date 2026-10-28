@@ -1,0 +1,18 @@
+# Generated audio — NEVER commit. See PLAN.md §11.7.
+clips/
+*.opus
+*.wav
+*.tar.gz
+*.zip
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store

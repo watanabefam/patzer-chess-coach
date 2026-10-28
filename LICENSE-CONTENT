@@ -1,0 +1,31 @@
+CC0 1.0 Universal — Public Domain Dedication
+=============================================
+
+Applies to the authored content in this repository:
+
+  - packs/*/phrases.json
+  - packs/*/manifest.json
+  - docs/CHILD_REGISTER.md
+
+To the extent possible under law, watanabefam has waived all copyright and
+related or neighbouring rights to this content.
+
+You can copy, modify, distribute and perform the work, even for commercial
+purposes, all without asking permission.
+
+Full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+--------------------------------------------------------------------------
+NOT COVERED BY THIS DEDICATION
+
+Generated audio clips are NOT part of this dedication. They are produced from
+the phrases by a text-to-speech model, and no copyright is claimed in them:
+
+  - The clips are AI-generated output. Under the U.S. Copyright Office's
+    position (Copyright and Artificial Intelligence, Part 2: Copyrightability,
+    January 2025), purely AI-generated material is not copyrightable, and
+    prompts alone do not constitute sufficient human control.
+  - No rights are therefore asserted in the audio, and none are granted.
+  - Kokoro-82M model weights are licensed Apache-2.0 (c) hexgrad.
+
+See PLAN.md section 11.5 for the full analysis.
